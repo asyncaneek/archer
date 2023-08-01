@@ -1,0 +1,8 @@
+[package]
+name = "archer_command_bow"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+archer_model = { path = "../archer_model" }
+cmd_lib = "1.3.0"

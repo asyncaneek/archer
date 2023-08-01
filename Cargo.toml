@@ -1,4 +1,6 @@
 [workspace]
 members = [
-    "archer_model"
+    "archer_model",
+    "archer_command_bow",
+    "archer"
     ]
