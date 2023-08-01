@@ -1,11 +1,13 @@
 use cursive::views::TextView;
 
 fn main() {
-	let mut siv = cursive::default();
+	let mut app = cursive::default();
+	
+	app.load_toml(include_str!("./theme.toml")).unwrap();
 
-	siv.add_global_callback('q', |s| s.quit());
+	app.add_global_callback('q', |s| s.quit());
 
-	siv.add_layer(TextView::new("Hello cursive! Press <q> to quit."));
+	app.add_fullscreen_layer(TextView::new("Hello cursive! Press <q> to quit."));
 
-	siv.run();
+	app.run();
 }
