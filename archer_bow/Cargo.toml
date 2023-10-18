@@ -1,5 +1,5 @@
 [package]
-name = "archer_command_bow"
+name = "archer_bow"
 version = "0.1.0"
 edition = "2021"
 

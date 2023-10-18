@@ -1,21 +1,19 @@
 use crate::arrow::Arrow;
 
-pub enum Error
-{
+pub enum Error {
     /// String contains reason for failure
-    Failed( String ),
-    Unknown
+    Failed(String),
+    Unknown,
 }
 
 /// Archer's Bow will fires Arrows on the target
 /// Bow executes commands in a virtual shell
 /// It is stateful, meaning the environment is persisted until it is destroyed
-pub trait Bow
-{
-    /// Shoot an Arrow / Execute a command 
+pub trait Bow {
+    /// Shoot an Arrow / Execute a command
     /// return the result of the command
     /// or an Error if failed
-    fn shoot( arrow: &Arrow ) -> Result<String, Error>;
+    fn shoot(arrow: &Arrow) -> Result<String, Error>;
 }
 
 // future implementation

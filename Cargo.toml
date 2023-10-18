@@ -1,6 +1,7 @@
 [workspace]
+resolver = "2"
 members = [
     "archer_model",
-    "archer_command_bow",
+    "archer_bow",
     "archer"
     ]
