@@ -1,27 +1,36 @@
-use cursive::views::{LinearLayout, ResizedView, TextView, ListView};
+use cursive::view::Nameable;
+use cursive::views::{TextContent, TextView};
+use cursive::{Cursive, CursiveExt, View};
+use std::thread;
 
 fn main() {
-    let mut siv = cursive::default();
-
-    siv.load_toml(include_str!("./theme.toml")).unwrap();
-
+    let mut siv = Cursive::default();
     siv.add_global_callback('q', |s| s.quit());
 
-    // Create the left view with a list view
-    let list_view = ListView::new()
-    .child("cA", TextView::new("command A"))
-    .child("cB", TextView::new("command B"));
-    let left_view = ResizedView::with_full_height(list_view);
+    siv.add_layer(make_content_area() );
 
-    // Create the right view with a text view
-    let text_view = TextView::new("Text View");
-    let right_view = ResizedView::with_full_screen(text_view);
-
-    // Create the vertically split screen view
-    let split_view = LinearLayout::horizontal().child(left_view).child(right_view);
-
-    // Add the full-screen view to the Cursive root
-    siv.add_fullscreen_layer(split_view);
-
+    // Start the Cursive UI event loop
+    siv.set_autorefresh(true);
     siv.run();
+}
+
+fn make_content_area() -> Box<dyn View> {
+    // Create a shared mutable state to hold the text
+    let content = TextContent::new("");
+
+    // Clone the shared state for use in the thread
+    let thread_shared_text = content.clone();
+
+    // Spawn a new thread to update the text asynchronously
+    thread::spawn(move || {
+        // Simulate some asynchronous process
+        thread::sleep(std::time::Duration::from_secs(3));
+
+        // Update the text in the shared state
+        thread_shared_text.append("\nYeet! It worked 🖖");
+    });
+
+    // Create a TextView and add it to the Cursive UI
+    let text_view = TextView::new_with_content(content.clone()).with_name("content_area");
+    Box::new(text_view)
 }
