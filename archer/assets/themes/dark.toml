@@ -1,22 +1,22 @@
 shadow = false
-borders = "none"
+borders = "simple"
 
 [colors]
-background = "#000000"
+background = ""
 
-view = "#202020"
+view = "#000000"
 shadow = "#ffffff"
 text = "#ffffff"
 
-primary = "#ffffff"
+primary = "#8a771f"
 secondary = "#ffffff"
 tertiary = "#ffffff"
 
-title_primary = "#ffffff"
+title_primary = "#8a771f"
 title_secondary = "#ffffff"
 
 highlight = "#3e350d"
-highlight_inactive = "#8a771f"
+highlight_inactive = "#e1c02e"
 highlight_text = "#5f5115"
 
 # [styles.highlight]
