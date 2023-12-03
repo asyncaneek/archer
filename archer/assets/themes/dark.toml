@@ -1,0 +1,25 @@
+shadow = false
+borders = "none"
+
+[colors]
+background = "#000000"
+
+view = "#202020"
+shadow = "#ffffff"
+text = "#ffffff"
+
+primary = "#ffffff"
+secondary = "#ffffff"
+tertiary = "#ffffff"
+
+title_primary = "#ffffff"
+title_secondary = "#ffffff"
+
+highlight = "#3e350d"
+highlight_inactive = "#8a771f"
+highlight_text = "#5f5115"
+
+# [styles.highlight]
+#     effects = []
+#     front = "#8a771f"
+#     back = "#8a771f"
