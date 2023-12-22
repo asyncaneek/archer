@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 cursive={ version="0.20.0", default-features=false, features=["crossterm-backend", "toml"] }
 dirs = "5.0.1"
+log = "0.4.20"
