@@ -21,19 +21,24 @@ use crate::{
 pub struct DirectorySelectView {
     name: &'static str,
     path: PathBuf,
-    pub view: SelectView<PathBuf>,
+    pub view: ScrollView<SelectView<PathBuf>>,
 }
 
 impl View for DirectorySelectView {
     fn draw(&self, printer: &cursive::Printer) {
         self.view.draw(printer);
     }
+
+    fn layout(&mut self, xy: cursive::Vec2) {
+        self.view.layout(xy);
+    }
     fn on_event(&mut self, event: Event) -> EventResult {
         match event {
             Event::Key(Key::Enter) => {
-                if let Some(selection) = self.view.selection() {
+                if let Some(selection) = self.view.get_inner().selection() {
                     self.path = selection.to_owned().to_path_buf();
                     self.update_entries(selection.as_path());
+                    self.layout(cursive::XY { x: 0, y: 0 });
                 }
                 EventResult::Consumed(None)
             }
@@ -49,7 +54,7 @@ impl DirectorySelectView {
         let mut dir_sel_view = DirectorySelectView {
             name: name::DIR_SEL_VIEW,
             path: working_directory.to_owned(),
-            view: dir_list,
+            view: dir_list.scrollable(),
         };
         dir_sel_view.update_entries(working_directory);
 
@@ -59,8 +64,8 @@ impl DirectorySelectView {
         log::trace!("[DirectorySelectView::update_entries]");
         let select_view = &mut self.view;
 
-        select_view.clear();
-        select_view.add_item(
+        select_view.get_inner_mut().clear();
+        select_view.get_inner_mut().add_item(
             name::DIR_NAV_TO_PARENT,
             directory.parent().unwrap_or(directory).to_owned(),
         );
@@ -71,7 +76,9 @@ impl DirectorySelectView {
                 if path.is_dir() {
                     if let Some(folder_name) = path.file_name() {
                         if let Some(folder_name_str) = folder_name.to_str() {
-                            select_view.add_item(folder_name_str.to_owned(), path.clone());
+                            select_view
+                                .get_inner_mut()
+                                .add_item(folder_name_str.to_owned(), path.clone());
                         }
                     }
                 }
