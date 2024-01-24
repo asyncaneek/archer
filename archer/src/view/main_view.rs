@@ -1,21 +1,10 @@
-use std::{
-    borrow::BorrowMut,
-    cell::RefCell,
-    env, fs,
-    path::{Path, PathBuf},
-    rc::Rc,
-};
-
 use cursive::{
-    backend::Backend,
-    menu,
-    theme::PaletteColor,
-    view::{Nameable, Resizable, Scrollable},
-    views::{Button, Dialog, LinearLayout, Panel, ScrollView, SelectView, TextArea, TextView},
-    Cursive, CursiveExt, View,
+    view::{Nameable, Resizable},
+    views::{Dialog, LinearLayout, Panel},
+    Cursive,
 };
 
-use crate::detail::{self, name};
+use crate::detail::name;
 use crate::state;
 
 use super::directory_select_view::DirectorySelectView;
@@ -38,12 +27,16 @@ impl MainView {
         cursive.set_autohide_menu(false);
 
         // directory_select_view
-        let mut layout = DirectorySelectView::new(path);
+        let dir_sel_view = Panel::new(DirectorySelectView::new(path)).full_screen();
+        let cmd_sel_view = Panel::new(DirectorySelectView::new(path)).full_screen();
+        let layout = LinearLayout::horizontal()
+            .child(dir_sel_view)
+            .child(cmd_sel_view);
+
         cursive.add_layer(
             Dialog::new()
                 .title(path.to_str().unwrap())
                 .content(layout)
-                .padding_top(2)
                 .with_name(name::MAIN_VIEW)
                 .full_screen(),
         );

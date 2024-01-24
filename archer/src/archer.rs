@@ -1,20 +1,5 @@
-use std::path::{self, PathBuf};
-
-use crate::{
-    detail::{self, name},
-    state::State,
-    view::{
-        directory_select_view::{self, DirectorySelectView},
-        main_view,
-    },
-};
-use cursive::{
-    event::{Event, MouseButton, MouseEvent},
-    theme::PaletteColor,
-    view::{Nameable, Resizable, Scrollable},
-    views::{Dialog, LinearLayout, SelectView},
-    Cursive, CursiveExt,
-};
+use crate::{state::State, view::main_view};
+use cursive::{theme::PaletteColor, Cursive, CursiveExt};
 
 #[derive(Default)]
 pub struct Archer {
@@ -27,7 +12,7 @@ impl Archer {
         cursive::logger::init();
         log::debug!("Logger initialized.");
 
-        let mut state = State::default();
+        let state = State::default();
         let mut cursive = Cursive::default();
 
         Self::initialize_cursive(&mut cursive);
@@ -35,7 +20,7 @@ impl Archer {
         cursive.set_user_data(state);
 
         // main view contains all ui interactions
-        let mut main_view = main_view::MainView::new(&mut cursive);
+        let main_view = main_view::MainView::new(&mut cursive);
 
         Archer { cursive, main_view }
     }

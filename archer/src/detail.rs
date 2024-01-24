@@ -1,12 +1,4 @@
-use std::{
-    fs,
-    path::{Path, PathBuf},
-};
-
-use cursive::{
-    views::{Dialog, SelectView},
-    Cursive,
-};
+use cursive::{views::Dialog, Cursive};
 
 pub mod name {
     pub static MAIN_VIEW: &str = "explorer_dialog";

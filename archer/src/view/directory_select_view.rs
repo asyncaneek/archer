@@ -1,26 +1,21 @@
-use core::slice;
 use std::{
-    cell::RefCell,
     fs,
     path::{Path, PathBuf},
 };
 
 use cursive::{
-    view::{Nameable, Scrollable},
-    views::{Dialog, NamedView, ScrollView, SelectView, ViewRef},
-    Cursive, View,
+    view::Scrollable,
+    views::{ScrollView, SelectView},
+    View,
 };
 
 use cursive::event::{Event, EventResult, Key};
 
-use crate::{
-    detail::{self, name},
-    state,
-};
+use crate::detail::name;
 
 pub struct DirectorySelectView {
-    name: &'static str,
-    path: PathBuf,
+    pub name: &'static str,
+    pub path: PathBuf,
     pub view: ScrollView<SelectView<PathBuf>>,
 }
 
@@ -28,7 +23,6 @@ impl View for DirectorySelectView {
     fn draw(&self, printer: &cursive::Printer) {
         self.view.draw(printer);
     }
-
     fn layout(&mut self, xy: cursive::Vec2) {
         self.view.layout(xy);
     }
@@ -50,6 +44,7 @@ impl View for DirectorySelectView {
 impl DirectorySelectView {
     pub fn new(working_directory: &Path) -> Self {
         let mut dir_list = SelectView::<PathBuf>::new();
+        dir_list.set_autojump(true);
 
         let mut dir_sel_view = DirectorySelectView {
             name: name::DIR_SEL_VIEW,

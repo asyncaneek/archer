@@ -1,4 +1,4 @@
-#![allow(unused)]
+// #![allow(unused)]
 #![allow(clippy::needless_return)]
 
 pub mod archer;
