@@ -11,7 +11,7 @@ use cursive::{
 
 use cursive::event::{Event, EventResult, Key};
 
-use crate::detail::name;
+use crate::name;
 
 pub struct DirectorySelectView {
     pub name: &'static str,
@@ -55,7 +55,7 @@ impl DirectorySelectView {
         return dir_sel_view;
     }
     fn update_entries(&mut self, directory: &Path) {
-        log::info!("[DirectorySelectView::update_entries]");
+        log::trace!("[DirectorySelectView::update_entries]");
         let select_view = &mut self.view;
 
         select_view.get_inner_mut().clear();

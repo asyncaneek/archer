@@ -2,7 +2,8 @@
 #![allow(clippy::needless_return)]
 
 pub mod archer;
-pub mod detail;
+pub mod name;
+pub mod show_message;
 pub mod state;
 pub mod view;
 

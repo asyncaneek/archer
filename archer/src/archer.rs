@@ -1,6 +1,5 @@
 use crate::{state::State, view::main_view};
 use cursive::{theme::PaletteColor, Cursive, CursiveExt};
-use log::log_enabled;
 
 #[derive(Default)]
 pub struct Archer {

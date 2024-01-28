@@ -1,12 +1,11 @@
 use cursive::{
     event::Key,
     view::{Nameable, Resizable},
-    views::{Dialog, DummyView, LinearLayout, OnEventView, Panel},
+    views::{DummyView, LinearLayout, OnEventView, Panel},
     Cursive,
 };
 
-use crate::detail::name;
-use crate::state;
+use crate::{name, state};
 
 use super::directory_select_view::DirectorySelectView;
 
@@ -42,8 +41,8 @@ impl MainView {
         )
         .on_event(Key::Enter, update_title);
 
-        let cmd_sel_view = Panel::new(DummyView);
-        let queued_cmd_view = Panel::new(DummyView);
+        let cmd_sel_view = Panel::new(DummyView).title("Commands");
+        let queued_cmd_view = Panel::new(DummyView).title("Queue");
         let layout = LinearLayout::horizontal()
             .child(
                 LinearLayout::vertical()
