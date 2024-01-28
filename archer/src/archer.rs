@@ -1,5 +1,6 @@
 use crate::{state::State, view::main_view};
 use cursive::{theme::PaletteColor, Cursive, CursiveExt};
+use log::log_enabled;
 
 #[derive(Default)]
 pub struct Archer {
@@ -10,7 +11,8 @@ pub struct Archer {
 impl Archer {
     pub fn new() -> Archer {
         cursive::logger::init();
-        log::debug!("Logger initialized.");
+        log::set_max_level(log::LevelFilter::Info);
+        log::info!("Logger initialized.");
 
         let state = State::default();
         let mut cursive = Cursive::default();
@@ -40,7 +42,7 @@ impl Archer {
         cursive.add_global_callback('`', cursive::Cursive::toggle_debug_console);
 
         // start the cursive ui event loop
-        cursive.set_autorefresh(true);
+        // cursive.set_autorefresh(true);
     }
 
     pub fn run(mut self) {

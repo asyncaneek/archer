@@ -1,7 +1,5 @@
 [workspace]
 resolver = "2"
 members = [
-    "archer_model",
-    "archer_bow",
-    "archer"
+    "archer*"
     ]

@@ -32,9 +32,8 @@ impl View for DirectorySelectView {
                 if let Some(selection) = self.view.get_inner().selection() {
                     self.path = selection.to_owned().to_path_buf();
                     self.update_entries(selection.as_path());
-                    self.layout(cursive::XY { x: 0, y: 0 });
                 }
-                EventResult::Consumed(None)
+                EventResult::Ignored
             }
             _ => self.view.on_event(event),
         }
@@ -56,7 +55,7 @@ impl DirectorySelectView {
         return dir_sel_view;
     }
     fn update_entries(&mut self, directory: &Path) {
-        log::trace!("[DirectorySelectView::update_entries]");
+        log::info!("[DirectorySelectView::update_entries]");
         let select_view = &mut self.view;
 
         select_view.get_inner_mut().clear();

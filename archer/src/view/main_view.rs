@@ -1,6 +1,7 @@
 use cursive::{
+    event::Key,
     view::{Nameable, Resizable},
-    views::{Dialog, LinearLayout, Panel},
+    views::{Dialog, DummyView, LinearLayout, OnEventView, Panel},
     Cursive,
 };
 
@@ -26,20 +27,33 @@ impl MainView {
 
         cursive.set_autohide_menu(false);
 
+        let update_title = |s: &mut Cursive| {
+            if let Some(mut dir_sel_view) =
+                s.find_name::<Panel<DirectorySelectView>>(name::DIR_SEL_VIEW)
+            {
+                log::info!("update_title");
+                let path = dir_sel_view.get_inner_mut().path.clone();
+                dir_sel_view.set_title(path.file_name().unwrap().to_str().unwrap());
+            }
+        };
         // directory_select_view
-        let dir_sel_view = Panel::new(DirectorySelectView::new(path)).full_screen();
-        let cmd_sel_view = Panel::new(DirectorySelectView::new(path)).full_screen();
-        let layout = LinearLayout::horizontal()
-            .child(dir_sel_view)
-            .child(cmd_sel_view);
+        let dir_sel_view = OnEventView::new(
+            Panel::new(DirectorySelectView::new(path)).with_name(name::DIR_SEL_VIEW),
+        )
+        .on_event(Key::Enter, update_title);
 
-        cursive.add_layer(
-            Dialog::new()
-                .title(path.to_str().unwrap())
-                .content(layout)
-                .with_name(name::MAIN_VIEW)
-                .full_screen(),
-        );
+        let cmd_sel_view = Panel::new(DummyView);
+        let queued_cmd_view = Panel::new(DummyView);
+        let layout = LinearLayout::horizontal()
+            .child(
+                LinearLayout::vertical()
+                    .child(dir_sel_view.full_screen())
+                    .child(cmd_sel_view.full_screen()),
+            )
+            .child(DummyView {}.fixed_width(1))
+            .child(queued_cmd_view.full_screen());
+        cursive.add_layer(layout);
+        update_title(cursive);
 
         // command_select_view
         // command_output_view
