@@ -2,10 +2,9 @@
 #![allow(clippy::needless_return)]
 
 pub mod archer;
-pub mod name;
-pub mod show_message;
 pub mod state;
 pub mod view;
+pub mod model;
 
 use archer::Archer;
 

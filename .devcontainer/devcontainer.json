@@ -1,5 +1,5 @@
 {
-	"name": "rust ruminote workspace",
+	"name": "rust workspace",
 	"features": {
 		"ghcr.io/devcontainers/features/rust:1": {}
 	},

@@ -11,7 +11,7 @@ use cursive::{
 
 use cursive::event::{Event, EventResult, Key};
 
-use crate::name;
+use crate::model::name;
 
 pub struct DirectorySelectView {
     pub name: &'static str,
@@ -38,6 +38,19 @@ impl View for DirectorySelectView {
             _ => self.view.on_event(event),
         }
     }
+    fn focus_view(
+        &mut self,
+        sel: &cursive::view::Selector,
+    ) -> Result<cursive::event::EventResult, cursive::view::ViewNotFound> {
+        self.view.focus_view(sel)
+    }
+
+    fn take_focus(
+        &mut self,
+        source: cursive::direction::Direction,
+    ) -> Result<cursive::event::EventResult, cursive::view::CannotFocus> {
+        self.view.take_focus(source)
+    }
 }
 
 impl DirectorySelectView {
@@ -54,6 +67,7 @@ impl DirectorySelectView {
 
         return dir_sel_view;
     }
+
     fn update_entries(&mut self, directory: &Path) {
         log::trace!("[DirectorySelectView::update_entries]");
         let select_view = &mut self.view;

@@ -5,9 +5,10 @@ use cursive::{
     Cursive,
 };
 
-use crate::{name, state};
+use crate::{model::name, state};
 
 use super::directory_select_view::DirectorySelectView;
+use crate::view::command_select_view::CommandSelectView;
 
 #[derive(Default)]
 pub struct MainView;
@@ -32,16 +33,25 @@ impl MainView {
             {
                 log::info!("update_title");
                 let path = dir_sel_view.get_inner_mut().path.clone();
-                dir_sel_view.set_title(path.file_name().unwrap().to_str().unwrap());
+                let path_str = path.to_string_lossy().into_owned();
+                dir_sel_view.set_title(path_str);
             }
         };
+
         // directory_select_view
         let dir_sel_view = OnEventView::new(
             Panel::new(DirectorySelectView::new(path)).with_name(name::DIR_SEL_VIEW),
         )
         .on_event(Key::Enter, update_title);
 
-        let cmd_sel_view = Panel::new(DummyView).title("Commands");
+        // command_select_view
+        let cmd_sel_view = OnEventView::new(
+            Panel::new(CommandSelectView::new())
+                .title("commands")
+                .with_name(name::DIR_SEL_VIEW),
+        );
+
+        // other frames
         let queued_cmd_view = Panel::new(DummyView).title("Queue");
         let layout = LinearLayout::horizontal()
             .child(
@@ -51,12 +61,9 @@ impl MainView {
             )
             .child(DummyView {}.fixed_width(1))
             .child(queued_cmd_view.full_screen());
+
         cursive.add_layer(layout);
         update_title(cursive);
-
-        // command_select_view
-        // command_output_view
-        // status_bar_view
 
         return MainView {};
     }
