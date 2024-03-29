@@ -15,9 +15,9 @@ tertiary = "#ffffff"
 title_primary = "#8a771f"
 title_secondary = "#ffffff"
 
-highlight = "#e1c02e"
-highlight_inactive = "#3a320d"
-highlight_text = "#e1c02e"
+highlight = "#9f8821"
+highlight_inactive = "#4f4412"
+highlight_text = "#4f4311"
 
 # [styles.highlight]
 #     effects = []
