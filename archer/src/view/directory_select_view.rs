@@ -38,13 +38,6 @@ impl View for DirectorySelectView {
             _ => self.view.on_event(event),
         }
     }
-    fn focus_view(
-        &mut self,
-        sel: &cursive::view::Selector,
-    ) -> Result<cursive::event::EventResult, cursive::view::ViewNotFound> {
-        self.view.focus_view(sel)
-    }
-
     fn take_focus(
         &mut self,
         source: cursive::direction::Direction,

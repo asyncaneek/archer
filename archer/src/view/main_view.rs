@@ -7,7 +7,7 @@ use cursive::{
 
 use crate::{model::name, state};
 
-use super::directory_select_view::DirectorySelectView;
+use super::{directory_select_view::DirectorySelectView, pipeline_select_view::PipelineSelectView};
 use crate::view::command_select_view::CommandSelectView;
 
 #[derive(Default)]
@@ -27,13 +27,23 @@ impl MainView {
 
         cursive.set_autohide_menu(false);
 
-        let update_title = |s: &mut Cursive| {
+        let on_cwd_changed = |cursive: &mut Cursive| {
             if let Some(mut dir_sel_view) =
-                s.find_name::<Panel<DirectorySelectView>>(name::DIR_SEL_VIEW)
+                cursive.find_name::<Panel<DirectorySelectView>>(name::DIR_SEL_VIEW)
             {
                 log::info!("update_title");
                 let path = dir_sel_view.get_inner_mut().path.clone();
                 let path_str = path.to_string_lossy().into_owned();
+
+                // mutate state
+                let state = cursive.user_data::<state::State>().unwrap();
+                state.working_directory = path;
+                log::info!(
+                    "state.working_directory = {}",
+                    state.working_directory.to_string_lossy().into_owned()
+                );
+
+                // update dialog title
                 dir_sel_view.set_title(path_str);
             }
         };
@@ -42,17 +52,19 @@ impl MainView {
         let dir_sel_view = OnEventView::new(
             Panel::new(DirectorySelectView::new(path)).with_name(name::DIR_SEL_VIEW),
         )
-        .on_event(Key::Enter, update_title);
+        .on_event(Key::Enter, on_cwd_changed);
 
         // command_select_view
-        let cmd_sel_view = OnEventView::new(
-            Panel::new(CommandSelectView::new())
-                .title("commands")
-                .with_name(name::DIR_SEL_VIEW),
-        );
+        let cmd_sel_view = Panel::new(CommandSelectView::new().view)
+            .title("commands")
+            .with_name(name::CMD_SEL_VIEW);
 
-        // other frames
-        let queued_cmd_view = Panel::new(DummyView).title("Queue");
+        // pipeline_view
+        let queued_cmd_view = Panel::new(PipelineSelectView::new().view)
+            .title("pipeline")
+            .with_name(name::CMD_SEL_VIEW);
+
+        // layout
         let layout = LinearLayout::horizontal()
             .child(
                 LinearLayout::vertical()
@@ -63,7 +75,9 @@ impl MainView {
             .child(queued_cmd_view.full_screen());
 
         cursive.add_layer(layout);
-        update_title(cursive);
+
+        // refresh title
+        on_cwd_changed(cursive);
 
         return MainView {};
     }
